@@ -12,7 +12,7 @@ class NoteController {
 
     async getNoteById(req, res) {
         try {
-            const data = await noteService.getNoteById(req.params.id);
+            const data = await noteService.getNoteById(req);
             res.json({success: true, data: data});
         } catch(error) {
             res.status(500).json({success: false, error: "Cannot list notes!"});
@@ -21,7 +21,7 @@ class NoteController {
 
     async createNote(req, res) {
         try {
-            const details = await noteService.createNote(req.body.noteContent);
+            const details = await noteService.createNote(req.user.user_id, req.body.noteContent);
             res.json({success: details});
         } catch(error) {
             console.log(error);
@@ -31,7 +31,7 @@ class NoteController {
 
     async deleteNote(req, res) {
         try {
-            const details = await noteService.deleteNote(req.params.id);
+            const details = await noteService.deleteNote(req);
             res.json({success: details});
         } catch(error) {
             console.log(error);
@@ -41,11 +41,21 @@ class NoteController {
 
     async updateNote(req, res) {
         try {
-            const details = await noteService.updateNote(req.params.id, req.body.noteContent);
+            const details = await noteService.updateNote(req);
             res.json({success: details});
         } catch(error) {
             console.log(error);
             res.status(500).json({success: false, error: "Couldn't  update a note!"});
+        }
+    }
+
+    async getMyNotes(req, res) {
+        try {
+            const data = await noteService.getMyNotes(req.user.user_id);
+            res.json({success: true, data: data});
+        } catch(error) {
+            console.log(error);
+            res.status(500).json({success: false, error: "Couldn't fetch notes!"});
         }
     }
 }

@@ -2,9 +2,9 @@ const db = require('../config/db');
 const { v4: uuidv4 } = require('uuid');
 
 class NoteModel {
-    async create(noteContent) {
+    async create(user_id, noteContent) {
         try {
-            const user_id = uuidv4(), note_id = uuidv4();
+            const note_id = uuidv4();
             const sql = 'INSERT INTO notes (user_id, note_id, note) VALUES(?,?,?)'
             const [result] = await db.query(sql, [user_id, note_id, noteContent]);
 
@@ -32,7 +32,7 @@ class NoteModel {
         try {
             const sql = 'SELECT * FROM notes WHERE note_id=?';
             const [rows] = await db.query(sql,[id]);
-            return rows;
+            return rows[0];
         } catch(error) {
             throw new Error('Something gone wrong!');
         }
@@ -63,6 +63,16 @@ class NoteModel {
             }
             
             return "Succedded!";
+        } catch(error) {
+            throw new Error('Something gone wrong! ' + error);
+        }
+    }
+
+    async getMyNotes(user_id) {
+        try {
+            const sql = 'SELECT note_id, note FROM notes WHERE user_id=?';
+            const [rows] = await db.query(sql, [user_id]);
+            return rows;
         } catch(error) {
             throw new Error('Something gone wrong! ' + error);
         }
