@@ -1,5 +1,4 @@
 let mysql = require('mysql2/promise');
-require('dotenv').config();
 
 let con = mysql.createPool({
   host: "127.0.0.1",
