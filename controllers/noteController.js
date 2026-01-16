@@ -3,8 +3,8 @@ const noteService = require('../services/noteService');
 class NoteController {
     async getAllNotes(req, res) {
         try {
-            // TO DO
-            res.json({success: true, details: 'TO DO'});
+            const data = await noteService.getAllNotes();
+            res.json({success: true, data: data});
         } catch(error) {
             res.status(500).json({success: false, error: "Cannot list notes!"});
         }
@@ -12,8 +12,8 @@ class NoteController {
 
     async getNoteById(req, res) {
         try {
-            // TO DO
-            res.json({success: true, details: 'TO DO'});
+            const data = await noteService.getNoteById(req.params.id);
+            res.json({success: true, data: data});
         } catch(error) {
             res.status(500).json({success: false, error: "Cannot list notes!"});
         }
@@ -21,12 +21,31 @@ class NoteController {
 
     async createNote(req, res) {
         try {
-            // TO DO
-            const response = await noteService.createNote(req.body.noteContent);
-            res.json({success:true, details: response});
+            await noteService.createNote(req.body.noteContent);
+            res.json({success:true});
         } catch(error) {
             console.log(error);
             res.status(500).json({success: false, error: "Couldn't create a note!"});
+        }
+    }
+
+    async deleteNote(req, res) {
+        try {
+            await noteService.deleteNote(req.params.id);
+            res.json({success: true});
+        } catch(error) {
+            console.log(error);
+            res.status(500).json({success: false, error: "Couldn't  delete a note!"});
+        }
+    }
+
+    async updateNote(req, res) {
+        try {
+            await noteService.updateNote(req.params.id, req.body.noteContent);
+            res.json({success: true});
+        } catch(error) {
+            console.log(error);
+            res.status(500).json({success: false, error: "Couldn't  update a note!"});
         }
     }
 }
