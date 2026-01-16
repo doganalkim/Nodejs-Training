@@ -21,8 +21,8 @@ class NoteController {
 
     async createNote(req, res) {
         try {
-            await noteService.createNote(req.body.noteContent);
-            res.json({success:true});
+            const details = await noteService.createNote(req.body.noteContent);
+            res.json({success: details});
         } catch(error) {
             console.log(error);
             res.status(500).json({success: false, error: "Couldn't create a note!"});
@@ -31,8 +31,8 @@ class NoteController {
 
     async deleteNote(req, res) {
         try {
-            await noteService.deleteNote(req.params.id);
-            res.json({success: true});
+            const details = await noteService.deleteNote(req.params.id);
+            res.json({success: details});
         } catch(error) {
             console.log(error);
             res.status(500).json({success: false, error: "Couldn't  delete a note!"});
@@ -41,8 +41,8 @@ class NoteController {
 
     async updateNote(req, res) {
         try {
-            await noteService.updateNote(req.params.id, req.body.noteContent);
-            res.json({success: true});
+            const details = await noteService.updateNote(req.params.id, req.body.noteContent);
+            res.json({success: details});
         } catch(error) {
             console.log(error);
             res.status(500).json({success: false, error: "Couldn't  update a note!"});

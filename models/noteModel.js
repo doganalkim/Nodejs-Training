@@ -6,7 +6,13 @@ class NoteModel {
         try {
             const user_id = uuidv4(), note_id = uuidv4();
             const sql = 'INSERT INTO notes (user_id, note_id, note) VALUES(?,?,?)'
-            await db.query(sql, [user_id, note_id, noteContent]);
+            const [result] = await db.query(sql, [user_id, note_id, noteContent]);
+
+            if(result.affectedRows < 1) {
+                return "Failed!";
+            }
+            
+            return "Succedded!";
         } catch(error) {
             throw new Error('Something gone wrong!');
         }
@@ -35,7 +41,13 @@ class NoteModel {
     async deleteNote(id) {
         try {
             const sql = 'DELETE FROM notes WHERE note_id=?';
-            await db.query(sql, [id]);
+            const [result] = await db.query(sql, [id]);
+
+            if(result.affectedRows < 1) {
+                return "Failed!";
+            }
+            
+            return "Succedded!";
         } catch(error) {
             throw new Error('Something gone wrong!');
         }
@@ -44,7 +56,13 @@ class NoteModel {
     async updateNote(note_id, note_content) {
         try {
             const sql = 'UPDATE notes SET note=? WHERE note_id=?';
-            await db.query(sql, [note_content, note_id]);
+            const [result] = await db.query(sql, [note_content, note_id]);
+
+            if(result.affectedRows < 1) {
+                return "Failed!";
+            }
+            
+            return "Succedded!";
         } catch(error) {
             throw new Error('Something gone wrong! ' + error);
         }
